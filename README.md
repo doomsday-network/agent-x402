@@ -27,9 +27,18 @@ x402 turns a `402 Payment Required` into a signed USDC transfer. That means an a
 ## Install
 
 ```bash
-npm install agent-x402
+# tarball из релиза: без токена и без npm-логина
+npm i -g https://github.com/rustemmustafingovua-byte/agent-x402/releases/download/v0.1.0/agent-x402-0.1.0.tgz
 ```
 
+<details>
+<summary>Через GitHub Packages</summary>
+
+```bash
+npm i -g @rustemmustafingovua-byte/agent-x402 --registry=https://npm.pkg.github.com
+```
+
+</details>
 ## Use
 
 ```js
