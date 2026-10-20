@@ -1,0 +1,22 @@
+{
+  "name": "agent-x402",
+  "version": "0.1.0",
+  "description": "x402 micropayments for AI agents: pay per API call in USDC on Base or Solana, with budget guards, allowlists and no account required.",
+  "type": "module",
+  "license": "MIT",
+  "bin": { "ax402": "bin/ax402.js" },
+  "exports": { ".": "./src/index.js" },
+  "engines": { "node": ">=20" },
+  "keywords": ["x402","usdc","base","solana","ai-agents","micropayments","crypto","payments","mcp"],
+  "files": ["bin", "src", "README.md", "LICENSE"],
+  "scripts": {
+    "test": "node --test test/",
+    "lint": "node --check src/index.js && node --check bin/ax402.js"
+  },
+  "dependencies": {
+    "viem": "^2.57.0"
+  },
+  "repository": { "type": "git", "url": "https://github.com/rustemmustafingovua-byte/agent-x402.git" },
+  "bugs": { "url": "https://github.com/rustemmustafingovua-byte/agent-x402/issues" },
+  "homepage": "https://github.com/rustemmustafingovua-byte/agent-x402#readme"
+}
