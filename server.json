@@ -1,0 +1,29 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.rustemmustafingovua-byte/agent-x402",
+  "description": "Pay per API call in USDC on Base with x402, with a spend policy enforced outside the model",
+  "title": "agent-x402",
+  "version": "0.1.0",
+  "websiteUrl": "https://rustemmustafingovua-byte.github.io/agent-x402/",
+  "repository": {
+    "url": "https://github.com/rustemmustafingovua-byte/agent-x402",
+    "source": "github"
+  },
+  "packages": [
+    {
+      "registryType": "npm",
+      "registryBaseUrl": "https://registry.npmjs.org",
+      "identifier": "agent-x402",
+      "version": "0.1.0",
+      "transport": { "type": "stdio" },
+      "environmentVariables": [
+        {
+          "name": "GITHUB_TOKEN",
+          "description": "Optional. Raises the GitHub search rate limit and enables code and issue search.",
+          "isRequired": false,
+          "isSecret": true
+        }
+      ]
+    }
+  ]
+}
