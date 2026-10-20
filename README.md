@@ -1,14 +1,22 @@
 <div align="center">
 
+<img src="docs/social-preview.png" alt="agent-x402" width="100%">
+
 # agent-x402
 
-**x402 micropayments for AI agents — pay per API call in USDC on Base or Solana. No account, no API key, no subscription. With a spending policy that a prompt injection cannot talk its way past.**
+**x402 micropayments for AI agents — pay per API call in USDC on Base. No account, no API key, no subscription. With a spend policy a prompt injection cannot talk its way past.**
 
-[![npm](https://img.shields.io/npm/v/agent-x402)](https://www.npmjs.com/package/agent-x402)
-[![license](https://img.shields.io/badge/license-MIT-blue)](./LICENSE)
-[![tests](https://img.shields.io/badge/tests-node--test-green)](./test)
+[![CI](https://github.com/rustemmustafingovua-byte/agent-x402/actions/workflows/ci.yml/badge.svg)](https://github.com/rustemmustafingovua-byte/agent-x402/actions/workflows/ci.yml)
+[![npm](https://img.shields.io/npm/v/agent-x402?color=cb3837&logo=npm)](https://www.npmjs.com/package/agent-x402)
+[![license](https://img.shields.io/badge/license-MIT-8b949e?logo=opensourceinitiative)](./LICENSE)
+[![node](https://img.shields.io/badge/node-%3E%3D20-3c873a?logo=node.js)](https://nodejs.org)
+[![paid](https://img.shields.io/badge/USDC-0x8aC6a229f254980CCd3Dd35CF5E1B7c08880B40E-2775ca?logo=ethereum)](https://base.org)
+
+[**Docs**](https://rustemmustafingovua-byte.github.io/agent-x402/) · [Contributing](CONTRIBUTING.md) · [Security](SECURITY.md) · [Issues](https://github.com/rustemmustafingovua-byte/agent-x402/issues) · [Discussions](https://github.com/rustemmustafingovua-byte/agent-x402/discussions)
 
 </div>
+
+---
 
 ## The problem
 
@@ -59,6 +67,24 @@ Rules live in code, outside the model:
 
 `policy.check()` runs **before** signing; `policy.commit()` records what was actually spent. The day counter resets on the UTC day boundary.
 
+## How the payment flows
+
+```mermaid
+sequenceDiagram
+  participant A as Agent
+  participant S as Service (402)
+  participant W as Wallet (USDC, Base)
+  A->>S: GET /v1/chat/completions
+  S-->>A: 402 + payment-required (accepts, 5 USDC)
+  A->>A: policy.check() — caps, allow-list
+  A->>W: balanceOf(address)
+  W-->>A: 12.40 USDC
+  A->>A: sign EIP-3009 transferWithAuthorization
+  A->>S: retry + SIGN-IN-WITH-X
+  S-->>A: 200 answer
+  A->>A: policy.commit() — record the spend
+```
+
 ## Under the hood
 
 1. `GET`/`POST` the endpoint → `402` with a `payment-required` header (base64 JSON)
@@ -84,6 +110,14 @@ ax402 pay <url> [json]   # call any x402 endpoint, paying automatically
 ax402 quote <url>        # show what a call would cost, pay nothing
 ax402 policy             # show the current spend report
 ```
+
+## Part of a portfolio
+
+| Project | What it does |
+|---|---|
+| [`opencode-free-stack`](https://github.com/rustemmustafingovua-byte/opencode-free-stack) | route to free models, fall back automatically |
+| [`free-web-mcp`](https://github.com/rustemmustafingovua-byte/free-web-mcp) | web search and page reading for agents, zero credits |
+| [`agent-x402`](https://github.com/rustemmustafingovua-byte/agent-x402) | pay per API call in USDC with a spend policy |
 
 ## Donate
 
