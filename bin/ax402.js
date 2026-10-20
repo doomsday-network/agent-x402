@@ -13,6 +13,19 @@ import { homedir } from "node:os"
 import { join } from "node:path"
 import { X402Client, SpendPolicy, createAgentWallet, usdcBalance } from "../src/index.js"
 
+// --- CLI shell: --help / --version -------------------------------------------
+const HELP = "ax402 — x402 micropayments for AI agents, with a spend policy.\n\nUSAGE\n  ax402 new                     create an agent wallet\n  ax402 balance                 USDC balance on Base\n  ax402 quote <url> [METHOD]    what would this call cost\n  ax402 pay <url> [json]        call the endpoint, paying with USDC\n  ax402 policy                  show the spend report\n\nCOMMANDS / OPTIONS\n  new      create a wallet in ~/.config/agent-x402/wallet.json (mode 600)\n  balance  read the USDC balance of the agent wallet\n  quote    perform the request, read the 402 terms, pay nothing\n  pay      perform the request and pay it (policy enforced before signing)\n  policy   show the daily spend, the number of payments and the per-model breakdown\n\nThe private key never leaves the process that signs. x402 payments are irreversible.\n\nMIT · https://github.com/rustemmustafingovua-byte"
+const VERSION = "0.1.0"
+if (process.argv.includes("--help") || process.argv.includes("-h")) {
+  console.log(HELP)
+  process.exit(0)
+}
+if (process.argv.includes("--version") || process.argv.includes("-V")) {
+  console.log(VERSION)
+  process.exit(0)
+}
+
+
 const DIR = join(homedir(), ".config", "agent-x402")
 const KEY_FILE = join(DIR, "wallet.json")
 const POLICY_FILE = join(DIR, "policy.json")
