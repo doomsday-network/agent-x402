@@ -101,6 +101,27 @@ sequenceDiagram
 | `api.venice.ai/api/v1` | Claude Haiku 5.5 / Sonnet 5.5 / Opus 5.5 | from $0.10 / 1M in |
 | `pool.linkrra.com/v1` | open-weight models on their own GPUs, no key | from $0.001 / call |
 
+## MCP server — wallet operations as tools
+
+The private key stays inside the process; the policy is enforced before the
+client signs anything.
+
+```jsonc
+// opencode.json
+{
+  "mcp": {
+    "agent-x402": { "type": "local", "command": ["ax402-mcp"], "enabled": true }
+  }
+}
+```
+
+| Tool | What it does |
+|---|---|
+| `x402-wallet` | address + USDC balance (never the key) |
+| `x402-quote` | what would this call cost — pays nothing |
+| `x402-pay` | call + pay, policy enforced before signing |
+| `x402-policy` | show or update caps, allow-list, blocked contracts |
+
 ## CLI
 
 ```bash
@@ -132,9 +153,11 @@ MIT, forever. USDC on Base:
 - [x] x402 v2 "exact" scheme on Base (EIP-3009)
 - [x] spend policy: caps, allow-list, block-list, per-network
 - [x] CLI and tests
+- [x] MCP server exposing wallet and policy operations
+- [x] policy file (`~/.config/agent-x402/policy.json`)
 - [ ] Solana USDC (SPL) signing
-- [ ] policy file format (`x402-policy.json`) + MCP server exposing wallet ops
 - [ ] spend report exporter (CSV/JSON) for accounting
+- [ ] hosted relay with a take rate
 
 ## License
 
