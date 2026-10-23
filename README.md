@@ -61,6 +61,25 @@ const res = await client.fetch("https://api.venice.ai/api/v1/chat/completions", 
 console.log(res.paid, res.amountUsd, res.body)
 ```
 
+### Using Solana USDC (SPL)
+
+```js
+import { X402Client, SpendPolicy, createSolanaAgentWallet, SOLANA_MAINNET_CAIP2 } from "agent-x402"
+
+const solanaWallet = createSolanaAgentWallet()
+const policy = new SpendPolicy({
+  dailyUsd: 5,
+  perRequestUsd: 0.5,
+  perProviderUsd: { [SOLANA_MAINNET_CAIP2]: 2 },
+})
+
+const client = new X402Client({
+  solanaWallet,
+  network: SOLANA_MAINNET_CAIP2, // or "solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp"
+  policy,
+})
+```
+
 ## What the policy enforces
 
 Rules live in code, outside the model:
@@ -100,7 +119,7 @@ sequenceDiagram
 2. pick an accepted option (`eip155:8453` preferred, Solana supported)
 3. `policy.check()` → refuse if it breaks the rules
 4. check the USDC balance on Base
-5. sign an **EIP-3009** `transferWithAuthorization` (USDC, `exact` scheme, 15-minute window)
+5. sign an **EIP-3009** `transferWithAuthorization` on Base (`eip155:8453`) or an **Ed25519 SPL** `transferWithAuthorization` on Solana (`solana:5eykt4UsFv8P8NJdTREY1vzqKqZKvdp` / `solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp`)
 6. retry with the signed payment in `SIGN-IN-WITH-X` / `X-PAYMENT` / `PAYMENT-SIGNATURE`
 
 ## Services that accept x402 today
@@ -174,7 +193,7 @@ MIT, forever. USDC on Base:
 - [x] CLI and tests
 - [x] MCP server exposing wallet and policy operations
 - [x] policy file (`~/.config/agent-x402/policy.json`)
-- [ ] Solana USDC (SPL) signing
+- [x] Solana USDC (SPL) signing (`solana:5eykt4UsFv8P8NJdTREY1vzqKqZKvdp` / `solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp`)
 - [ ] spend report exporter (CSV/JSON) for accounting
 - [ ] hosted relay with a take rate
 
